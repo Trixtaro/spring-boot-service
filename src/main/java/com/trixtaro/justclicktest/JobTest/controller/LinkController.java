@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
@@ -27,11 +28,17 @@ public class LinkController {
     }
 
     @GetMapping("/{string}")
-    public ResponseEntity get(@PathVariable String string, HttpServletResponse response) throws IOException{
+    public ResponseEntity get(@PathVariable String string, HttpServletRequest request, HttpServletResponse response) throws IOException{
 
         List<Link> links = linkRepository.findByValue(string);
 
-        if(links.size() > 0){
+        if(links.size() > 0 && links.get(0).getRemainingCalls() > 0){
+
+            Link currentLink = links.get(0);
+
+            currentLink.setRemainingCalls(currentLink.getRemainingCalls() - 1);
+            linkRepository.save(currentLink);
+
             response.sendRedirect(links.get(0).getUrl());
             return new ResponseEntity(HttpStatus.PERMANENT_REDIRECT);
         } else {
