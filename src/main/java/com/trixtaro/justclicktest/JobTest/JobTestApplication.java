@@ -16,6 +16,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Calendar;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -23,10 +24,16 @@ import java.util.TimerTask;
 @SpringBootApplication
 public class JobTestApplication {
 
-	private static final int TIMER_INTERVAL = 10000; // 5 * 60 * 1000; // 5 minutes
+	private static final int TIMER_INTERVAL = 60 * 60 * 1000; // 1 hour
 
 	public static void main(String[] args) {
 		SpringApplication.run(JobTestApplication.class, args);
+
+		Calendar date = Calendar.getInstance();
+
+		date.set(Calendar.MINUTE, 5);
+		date.set(Calendar.SECOND, 0);
+		date.set(Calendar.MILLISECOND, 0);
 
 		Timer timer = new Timer();
 		timer.schedule(new TimerTask() {
@@ -87,7 +94,7 @@ public class JobTestApplication {
 
 			}
 
-		}, 0, TIMER_INTERVAL);
+		}, date.getTime(), TIMER_INTERVAL);
 	}
 
 }
