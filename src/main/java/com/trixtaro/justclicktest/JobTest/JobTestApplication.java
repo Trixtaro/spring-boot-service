@@ -31,9 +31,9 @@ public class JobTestApplication {
 
 		Calendar date = Calendar.getInstance();
 
+		date.add(Calendar.HOUR, 1);
 		date.set(Calendar.MINUTE, 5);
 		date.set(Calendar.SECOND, 0);
-		date.set(Calendar.MILLISECOND, 0);
 
 		Timer timer = new Timer();
 		timer.schedule(new TimerTask() {
